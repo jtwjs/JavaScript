@@ -1,0 +1,10 @@
+{
+  "liveServer.settings.multiRootWorkspaceName": "JS",
+  "code-runner.runInTerminal": true,
+  "editor.formatOnSave": true,
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  },
+"json.schemas": []
+}
