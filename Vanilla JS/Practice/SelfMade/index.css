@@ -1,0 +1,106 @@
+.form_name.showing {
+  display: block;
+}
+
+body {
+  color: #fff;
+  background-color: #025159;
+}
+
+.weather_info {
+  display: flex;
+  flex-direction: column-reverse;
+  text-align: right;
+}
+
+#local-name {
+  font-size: 20px;
+}
+
+#temperature {
+  font-size: 25px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.main_title {
+  width: 420px;
+  margin-bottom: 55px;
+}
+
+.timer {
+  width: 100%;
+  font-size: 120px;
+  line-height: 1.5;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.form_name {
+  display: none;
+}
+
+.form_name,
+.form_toDo {
+  padding: 0 10px;
+}
+
+.form-title {
+  width: 100%;
+  font-size: 25px;
+  text-align: center;
+}
+
+.form-input {
+  width: 390px;
+  height: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 5px;
+}
+
+.greeting {
+  font-size: 25px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.main_toDoList {
+  width: 420px;
+}
+
+.main_toDoList dl {
+  width: 100%;
+}
+
+.main_toDoList dt {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.main_toDoList h3 {
+  width: 100%;
+  text-align: center;
+}
+
+.toDoContainer li {
+  display: flex;
+  padding: 0 15px;
+}
+
+.toDoContainer li > span {
+  width: 380px;
+}
+
+.delBtn {
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+}

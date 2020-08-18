@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Woong's Momentom</title>
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <dl class="weather_info">
+          <dt id="local-name"></dt>
+          <dd id="temperature"></dd>
+        </dl>
+      </div>
+    </header>
+    <main>
+      <section class="main_title">
+        <p class="timer" aria-label="current time">00:00</p>
+        <form class="form_name">
+          <h3 class="form-title">What your name !?...</h3>
+          <input type="text" class="form-input" />
+        </form>
+      </section>
+      <article class="main_toDoList">
+        <dl>
+          <dt>
+            <form class="form_toDo">
+              <h3 class="form-title">What is something to do today??</h3>
+              <input type="text" class="form-input" />
+            </form>
+          </dt>
+          <dd>
+            <h3>TODAY</h3>
+            <ol class="toDoContainer"></ol>
+          </dd>
+        </dl>
+      </article>
+    </main>
+    <footer>
+      <h2 class="sr-only">copyright</h2>
+      <span>&copy; Woong</span>
+    </footer>
+    <script type="text/javascript" src="./timer.js"></script>
+    <script type="text/javascript" src="./greeting.js"></script>
+    <script type="text/javascript" src="./todo.js"></script>
+    <script type="text/javascript" src="./weather.js"></script>
+  </body>
+</html>
