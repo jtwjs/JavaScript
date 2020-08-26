@@ -225,6 +225,172 @@
   - ex: MouseEvent, keyboardEvent, WheelEvent
 - event 개체는 stopPropagation(), stopImmediatePropagation(), preventDefault()메서드도 제공됨
   - stopPropagation(): 부모태그로의 이벤트 전파를 stop 중지시킨다.
-  - stopImmediatePropagation(): 같은 이벤트에서 다른 리스너들이 불려지는것울 먹움
+  - stopImmediatePropagation(): 같은 이벤트에서 다른 리스너들이 불려지는것울 막음
   - preventDefault(): 해당 이벤트 외에 별도의 브라우저 행동을 막기위해 사용
 - envet라는 인수명은 아무이름이나 써도 상관없으며, e나 evt로 쓰는것도 흔히볼수 있다.
+
+### 6. addEventListener() 사용 시 this의 값
+
+> addEventListener() 메서드에 전달되는 이벤트 수신기 함수 내부에서 this 값은 이벤트가 연결된 노드나 개체에 대한 참조가 된다.
+
+- ```javascript
+  document.querySelector("div").addEventListener("click", function () {
+    //'this'는 이벤트 수신기가 연결된 element나 노드가 된다.
+    console.log(this); // '<div>' 가 출력됨
+  });
+  ```
+- 이벤트 흐름의 일부로 이벤트가 호출되면, this 값은 이벤트 수신기가 연결된 노드나 개체의 값이 된다.
+- ```javascript
+  //<div>나 <body>를 클릭해도, this 값은 <body> element 노드로 유지된다.
+  document.body.addEventListener("click", function () {
+    console.log(this); //<body>..</body>가 출력됨
+  });
+  ```
+- **event.currentTarget** 속성을 사용하여 this 속성이 제공하는 것과 동일하게 이벤트 수신기를 호출하는 노드나 개체에 대한참조를 얻을 수 있다.
+- ```javascript
+  document.addEventListener("click", function (event) {
+    console.log(event.currentTarget); //'#document'가 출력됨
+    console.log(this); //출력값 동일
+  });
+  ```
+
+### 7. 이벤트가 호출된 노드나 개체가 아닌 이벤트의 대상을 참조
+
+- **event.target**
+  - 이벤트 흐름에서 이벤트의 진원지를 알려할 때 사용
+- ```javascript
+  document.body.addEventListener("click", function (event) {
+    //<div>가 클릭되면, <div>가 이벤트 흐름에서 대상이므로 '<div>가 출력된다.
+    console.log(event.target);
+    /*<body> element가 클릭되면, 이벤트 대상과 이벤트 수신기가 호출된 element 노드가 동일하게 된다.
+    따라서 event.target, this, event.currentTarget은 모두 <body> element에 대한 참조를 가지게 된다.*/
+  });
+  ```
+
+### 8. preventDefault()를 사용하여 기본 브라우저 이벤트 취소하기
+
+> 브라우저는 HTML 페이지를 사용자에게 보여줄 때 사전에 구성된 여러 이벤트를 제공한다.<br>예를 들어, 링크 클릭(URL 이동), 체크박스 클릭(박스 체크표시),텍스트 필드에 텍스트 입력(텍스트가 입력되어 스크린에 표시)하는 것도 마찬가지다.<br>이러한 브라우저 이벤트는 브라우저 기본 이벤트를 호출하는 노드나 개체에 연결된 이벤트 핸들러 함수 내부에서 preventDefault() 메서드를 호출해서 막을 수 있다.
+
+- ```javascript
+  document.querySelector("a").addEventListener("click", function (event) {
+    event.preventDefault(); // url을 로드하는 <a>의 기본 이벤트를 중지 시킴
+  });
+  ```
+- preventDefault() 메서드는 이벤트가 전파되는것을 중지시키지 않는다.
+- 이벤트 수신기의 끝부분에서 false를 반환하면 preventDefulat() 메서드를 호출하는 것과 동일한 결과를 갖는다.
+
+### 9. stopPropagation()을 사용하여 이벤트 흐름을 중지시키기
+
+> 이벤트 핸들러/수신기 내에서 stopPropagation()을 호출하면 캡처/버블링 이벤트 흐름단계가 중지되지만,<br>노드나 개체에 직접 연결된 이벤트는 여전히 호출된다.
+
+- ```javascript
+  document.querySelector("div").addEventListener("click", function (event) {
+    console.log("invoked all click event attached, but cancel capture and bubble event phases");
+    event.stopPropagation();
+  });
+
+  /*<div>가 클릭되어도 <div>에 연결된 이벤트에서 캡처 및 버블 흐름을 중지시켯기에, 아래 이벤트는 호출되지 않음*/
+  document.body.addEventListener("click", function () {
+    console.log("What, denied from being invoked!");
+  });
+  ```
+
+- &#60;div&#62;에 연결된 다른 click 이벤트는 정상적으로 호출된다.
+- 추가적으로, stopPropagation()은 기본 이벤트를 막지 않는다.
+
+### 10. stopImmediatePropagtion()을 사용하여 동일한 대상의 이벤트 흐름뿐만아니라 다른 유사이벤트도 중지시키기
+
+> 이벤트 흐름 단계를 중지시키는 것(즉 stopPropagtion())뿐만 아니라, stopImmediatePropagation() 메서드를 호출한 이벤트 수신기 이후에 연결되어 호출되는 이벤트 대상의 다른 유사한 이벤트도 중지시킨다.
+
+- ```javascript
+  // 첫번쨰 이벤트 연결
+  document.querySelector("div").addEventListener("click", function () {
+    console.log("1");
+  });
+
+  //두번째 이벤트 연결
+  document.querySelector("div").addEventListener("click", function (event) {
+    console.log("2");
+    event.stopImmediatePropagation();
+  });
+
+  /*세 번째 이벤트가 연결되나, 앞에서 stopImmediatePropagation()에 호출되어 이 이벤트가 발생되지 않는다.*/
+  document.querySeletor("div").addEventListener("click", function () {
+    console.log("3");
+  });
+
+  /*stopPropagation이 호출된 것처럼 이벤트 흐름 역시 취소된다.*/
+  document.body.addEventListener("click", function () {
+    console.log("4");
+  });
+  ```
+
+- stopImmediatePropagation()을 사용하더라도 기본 이벤트는 막지 않는다.
+  - preventDefault()를 호출해야만 이 이벤트를 막을수 있다.
+
+### 11. 사용자 정의 이벤트
+
+> 개발자는 사전 정의된 이벤트 형식만으로 제한받지 않는다.<br>addEventListener() 메서드를 document.createEvent(), initCustomEvent(), dispatchEvent()와 조합해서 사용하면 사용자 정의 이벤트를 연결해서 호출할 수 있다.
+
+- ```javascript
+  const divElement = document.querySelector("div");
+  //사용자 정의 이벤트 생성
+  const cheer = document.createEvent("CustomEvent"); // 'CustomEvent' 매개변수가 필요함
+
+  //사용자 정의 이벤트에 대한 이벤트 수신기 생성
+  divElement.addEventListener("goBigBlue", function (event) {
+    console.log(event.detail.goBigBlueIs);
+  });
+
+  /*initCustomEvent 메서드를 사용하여 사용자 정의 이벤트를 상세하게 설정한다.
+  initCustomEvent의 매개변수는 event, bubble?, cancelable?, event.detail로 전달될 값이다*/
+  cheer.initCustomEvent("goBigBlue", true, false, { goBigBlueIs: "its gone!" });
+
+  //dispatchEvent를 사용하여 사용자 정의 이벤트를 호출
+  divElement.dispatcchEvent(cheer);
+  ```
+
+- IE9는 initCustomEvent() 에서 4번째 매개변수를 필요로 하며, 선택이 아니다.
+- DOM4 사양서에서는 사용자 정의 입네트의 주기를 단순화시켜주는 CustomEvent()생성자가 추가되었지만 IE9는 지원되지않음
+
+### 12. 마우스 이벤트 시뮬레이션/트리거링
+
+> 이벤트를 시뮬레이션하는 것은 사용자 정의 이벤트와 별반 다를 바 없다.
+> <Br> 마우스 이벤트를 시뮬레이션하려면, Document.createEvent()를 사용하여 MouseEvent를 생성한 후 initMouseEvent()를 사용하여 발생할 마우스 이벤트를 구성한다.<br> 다음으로, 이벤트를 시뮬레이션하고자 하는 element에 전달한다.
+
+- ```javascript
+  const divElement = document.querySelctor("div");
+
+  //시뮬레이션할 click 이벤트를 구성
+  divElement.addEventListener("click", function (event) {
+    console.log(Object.keys(event));
+  });
+
+  //시뮬레이션된 'click' 마우스 이벤트 생성
+  const simulateDivClick = document.createEvent("MouseEvents");
+
+  /*initMouseEvent(type,bubbles,cancelable,view,detail,screenx,screeny,clientx,clienty,ctrlKey,altKey,shiftKey,metaKey,button,relatedTarget)*/
+  simulateDivClick.initMouseEvent(
+    'click',true,true,document,defaultView,0,0,0,0,0,false,false,false,0,null,null);
+
+    //시뮬레이션된 click 이벤트 발생
+    divElement.dispatchEvent(simulateDivClick);
+  )
+  ```
+
+### 13. 이벤트 위임
+
+> 이벤트 위임(delegate)은 간단히 말해 이벤트 흐름을 활용하여 단일 이벤트 수신기가 여러 개의 이벤트 대상을 처리할 수 있게 하는 프로그래밍 행위를 말함
+
+- ```javascript
+  document.querySelector("table").addEventListener("click", function (event) {
+    //대상이 td인 경우에만 코드를 실행
+    if (event.target.tagName.toLowerCase() === "td") {
+      console.log(event.target.textContent); //event.target을 사용하여 이벤트 대상(td)에 대한 접근을 얻는다.
+    }
+  });
+  ```
+- 이벤트 위임은 click, mousedown, mouseup, keydown, keyup, keypress 이벤트 형식을 처리할 때 활용하면 이상적이다.
+- 이벤트 위임의 부수작용은 이벤트가 생성될 떄 이벤트에 응답하기 위해 이벤트 대상이 DOM 내에 있을 필요가 없다는 것
+- 이벤트 위임을 구현함으로써, JavaSCript가 로드되어 해석된 후에 새로운 콘텐츠가 DOM에 추가되어도 즉시 이벤트에 응답할 수 있게 된다.
+- 이것이 가능한 이유는 이벤트 흐름 때문이며, 특히 그중에서 버블링단계임을 잊지말자
