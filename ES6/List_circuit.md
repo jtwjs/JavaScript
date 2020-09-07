@@ -108,7 +108,7 @@
   function add(a, b, c) {
     return a + b + c;
   }
-  var arr = [2, 4, 5];
+  const arr = [2, 4, 5];
   add.apply(null, arr); //11
   //add함수를 호출 할 때 인자값으로 arr배열의 원소를 사용하려면 함수의 기본 메서드인 apply를 사용해야만 했다.
 
