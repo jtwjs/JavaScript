@@ -1,8 +1,8 @@
-## map
 
-> 다형성이 높다. 이터러블인 모든 값들은 map을 사용 가능, 제네레이터 함수 결과값들도 map 가능 (사실상 모든것들 map 가능)
 
-- ```javascript
+/*Map: 다형성이 높다. 이터러블인 모든 값들은 map을 사용 가능, 제네레이터 함수 결과값들도 map 가능 (사실상 모든것들 map 가능)*/
+  const log = console.log;
+  
   const products = [
     { name: "반팔티", price: 15000 },
     { name: "긴팔티", price: 20000 },
@@ -22,11 +22,10 @@
     prices.push(p.price);
   }
   log(prices);
-  ```
 
-#### 함수형
 
-- ```javascript
+//## 함수형
+
   const map = (f, iter) => {
     let res = [];
     for (const a of iter) {
@@ -38,11 +37,10 @@
   log(map((p) => p.name, products));
 
   log(map((p) => p.price, products));
-  ```
 
-### 이터러블 프로토콜을 따른 map의 다양성
 
-- ```javascript
+//### 이터러블 프로토콜을 따른 map의 다양성
+
     log([1,2,3].map(a => a + 1));//2,3,4
 
     log(map(el => el.nodeName, document.querySelectorAll('*')));
@@ -59,4 +57,3 @@
     m.set('b', 20);
     log(new Map(map(([k,a]) => [k, a * 2], m)));
     //['a', 20],['b',40]
-  ```
