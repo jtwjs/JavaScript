@@ -138,3 +138,36 @@ go(
  [[mapping, mapping], [filtering, filtering], [mapping, mapping]]
  =
  [[mapping, filtering, mapping], [mapping, filtering, mapping]*/
+
+//## 결과를 만드는 함수 reduce, take
+
+//### reduce
+L.entries = function* (obj) {
+  for (const a in obj) yield [a, obj[a]];
+};
+
+const join = curry((sep = ",", iter) => reduce((a, b) => `${a}${sep}${b}`, iter)); //array 프로토타입 join보다 다형성이 높고 지연평가 가능(reduce성질)
+
+const quryStr = pipe(
+  L.entries, //[key, value]쌍의 배열을 반환
+  L.map(([k, v]) => `${k}=${v}`),
+  join("&")
+);
+
+log(quryStr({ limit: 10, offset: 10, type: "notice " }));
+
+//### take, find
+const users = [{ age: 32 }, { age: 31 }, { age: 38 }, { age: 25 }, { age: 36 }];
+
+/*받은 모든값을 어떤 조건으로 필터링하되 하나만 꺼내질때까지
+ 필터링 한후에 구조 분해를해서 결과를 주는 함수 */
+const find = curry((f, iter) => go(iter, L.filter(f), take(1), ([a]) => a));
+
+log(find((u) => u.age > 30, users));
+
+go(
+  users,
+  L.map((u) => u.age),
+  find((a) => a > 30),
+  log
+);
