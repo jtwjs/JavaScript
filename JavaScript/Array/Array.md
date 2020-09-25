@@ -38,4 +38,44 @@
 
 #### 배열 속 요소 순회하기
 
+- forEach()
+
+  - 순회하려는배열.forEach(함수로 정의한 순회하면서 할 일)
+
+- **map()**
+  - 순회하려는배열.map(함수로 정의한 순회하면서 할 일)
+  - 새로운 배열을 만들어 return 해줌
+- ```javascript
+  const arr = ["태웅", "언택", "재호", "지호"];
+  //forEach
+  arr.forEach( name => console.log(`내이름은 ${arr[1]}야`););
+
+  //map
+  const oddarr = [1, 3, 5, 7, 9];
+
+  const newarr = oddarr.map(num => num * 2);
+
+  console.log(oddarr); //[1, 3, 5, 7, 9]
+  console.log(newarr);//[2, 6, 10, 14, 18]
+  ```
+
 #### 내가 원하는 조건을 만족하는 배열 속 요소 찾기
+
+- **filter()**
+
+- ```javascript
+  const arr = [1, 2, 3, 4, 5, 6];
+
+  const filterarr = arr.filter((a) => a > 4);
+
+  console.log(filterarr); //[5, 6];
+
+  const postlist = [
+    { date: "yesterday", id: 1 },
+    { date: "yesterday", id: 2 },
+    { date: "today", id: 3 },
+  ];
+  const yesterday = postlist.filter((a) => a.date === "yesterday");
+
+  console.log(yesterday); // [{"date": "yesterday", "id": 1}, {"date": "yesterday", "id": 2}]
+  ```
