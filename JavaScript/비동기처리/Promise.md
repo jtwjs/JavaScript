@@ -87,4 +87,4 @@
     });
   ```
 
-  ![promise](https://user-images.githubusercontent.com/60641307/94361500-a926ad00-00ef-11eb-9da7-cab1a579429e.jpg)
+  ![Promise (1)](https://user-images.githubusercontent.com/60641307/94361939-c9a43680-00f2-11eb-9549-8d7092a710f9.jpg)
