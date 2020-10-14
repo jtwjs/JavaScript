@@ -1,0 +1,50 @@
+:root {
+  /* Size */
+  --content-maxWidth: 345px;
+  --padding: 12px;
+  /* Font Size */
+  --font-large: 24px;
+  --font-medium: 18px;
+  --font-small: 14px;
+}
+
+body {
+  font-family: sans-serif;
+}
+.game {
+  max-width: var(--content-maxWidth);
+}
+
+.game .title {
+  font-size: var(--font-large);
+}
+
+.game .generateNumber {
+  display: flex;
+  flex-direction: column;
+}
+
+.game .generateNumber span {
+  margin-bottom: var(--padding);
+  font-size: var(--font-medium);
+  font-weight: 600;
+}
+
+.game .guessNumber {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game .guessNumber span {
+  font-size: var(--font-medium);
+}
+
+.game .guessNumber .guessInputAndButton .number {
+  width: 50px;
+}
+
+.game .result {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/numberGame.css">
+    <title>Range Number Game</title>
+</head>
+<body>
+    
+    <section class="game">
+        <h2 class="title">Random Number Game</h2>
+  
+        <div class="generateNumber">
+          <span
+            >Generate a number between 0 and
+            <span class="maxNumber">10</span></span
+          >
+          <input type="range" class="range" value="0"  />
+        </div>
+        <div class="guessNumber">
+          <span>Guess the number:</span>
+          <div class="guessInputAndButton">
+            <input type="number" class="number" min="0" />
+            <button type="button" class="playBtn">play!</button>
+          </div>
+        </div>
+        <div class="result">
+            <span class="resultNumber">
+            </span>
+            <strong class="resultResult"></strong>
+        </div>
+      </section>
+      <script src="../JS/numberGame.js"></script>
+</body>
+</html>
