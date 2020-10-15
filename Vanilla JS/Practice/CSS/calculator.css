@@ -1,0 +1,74 @@
+:root {
+  /* Color */
+  --black-color: #000;
+  --grey-light-color: #6f737b;
+  --grey-deep-color: #313438;
+  --orange-color: #ff9704;
+  --white-color: #fff;
+
+  /* Font Size*/
+  --font-large: 24px;
+  --font-medium: 18px;
+
+  /* Size */
+  --calc-maxWidth: 500px;
+  --padding: 50px;
+  --grid-gap: 5px;
+  --button-height: 60px;
+}
+
+* {
+  outline: none;
+}
+body {
+  margin: 0;
+}
+
+.calculator {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, var(--button-height));
+  gap: var(--grid-gap);
+  max-width: var(--calc-maxWidth);
+  padding: var(--padding);
+  background-color: var(--black-color);
+}
+.output {
+  grid-column: span 3;
+  border: none;
+  padding: 0 15px;
+  font-size: var(--font-large);
+  font-weight: 600;
+  color: var(--white-color);
+  text-align: right;
+  background-color: var(--black-color);
+  cursor: default;
+}
+
+.button {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  font-size: var(--font-medium);
+  font-weight: 600;
+  color: var(--white-color);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.button.cancle {
+  background-color: var(--grey-light-color);
+}
+
+.button.number,
+.button.operator.equal {
+  background-color: var(--grey-deep-color);
+}
+
+.button.number.zero {
+  grid-column: span 2;
+}
+
+.button.operator {
+  background-color: var(--orange-color);
+}
