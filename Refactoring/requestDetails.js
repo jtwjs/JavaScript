@@ -35,7 +35,7 @@ const invoices = [
 
 
 function amountFor(perf, play) {
-    let thisAmount = 0;
+    let result = 0; //thisAmount -> result 명확한 이름으로 변경
     switch(play.type) {
         case "tragedy": //비극
             thisAmount = 40000;
@@ -53,7 +53,7 @@ function amountFor(perf, play) {
         default: 
             throw new Error(`알 수 없는 장르: ${play.type}`);
     }
-    return thisAmount; //함수 안에서 값이 바뀌는 변수 반환
+    return result; //함수 안에서 값이 바뀌는 변수 반환
 }
 
 function statement(invoices, plays) {
