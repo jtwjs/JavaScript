@@ -34,26 +34,30 @@ const invoices = [
 ]
 
 
-function amountFor(perf, play) {
+function amountFor(aPerformance, play) {
     let result = 0; //thisAmount -> result 명확한 이름으로 변경
     switch(play.type) {
         case "tragedy": //비극
             thisAmount = 40000;
-            if(perf.audience > 30) {
-                thisAmount += 1000 * (perf.audience - 30);
+            if(aPerformance.audience > 30) {
+                result += 1000 * (aPerformance.audience - 30);
             }
         break;
         case "comedy": //희극
             thisAmount = 30000;
-            if(perf.audience > 20) {
-                thisAmount += 10000 + 500 * (perf.audience - 20);
+            if(aPerformance.audience > 20) {
+                result += 10000 + 500 * (aPerformance.audience - 20);
             }
-            thisAmount += 300 * perf.audience;
+            result += 300 * aPerformance.audience;
             break;
         default: 
             throw new Error(`알 수 없는 장르: ${play.type}`);
     }
     return result; //함수 안에서 값이 바뀌는 변수 반환
+}
+
+function playFor(aPerformance) {
+    return plays[aPerformance.playId];
 }
 
 function statement(invoices, plays) {
@@ -64,7 +68,7 @@ function statement(invoices, plays) {
                         {style: "currency", currency: "USD",
                     minimumFractionDigit: 2}).format;
     for (let perf of invoices[0].perfomances) {
-        const play = plays[perf.playId];
+        const play = playFor(perf); //우변을 함수로 추출
         let thisAmount = amountFor(perf, play);
 
         //포인트를 적립한다
