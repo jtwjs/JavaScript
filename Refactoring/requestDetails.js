@@ -33,7 +33,53 @@ const invoices = [
     }
 ]
 
+function statement(invoices, plays) {
+    return renderPlainText(invoices,plays);
+}
 
+function renderPlainText(invoices, plays) {
+    let result = `청구 내역 (고객명: ${invoices[0].customer})\n`;
+    for (let perf of invoices[0].perfomances) {
+        // 청구 내역을 출력한다
+        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+    }
+
+    result += `총액: ${usd(totalAmount())}\n`;
+    result += `적립포인트: ${totalVolumeCredits()}점\n`;
+    return result;
+    
+    function totalAmount() {
+        let result = 0;
+        for(let perf of invoices[0].perfomances) {
+            result += amountFor(perf);
+        }
+        return result;
+    }
+    function totalVolumeCredits() {
+        let result = 0;
+        for (let perf of invoices[0].perfomances) {
+            result += volumeCreditsFor(perf);
+        }
+        return result;
+    }
+    function usd(aNumber) {
+        return new Intl.NumberFormat("en-US",
+                            {style: "currency", currency: "USD",
+                        minimumFactionDigits: 2}).format(aNumber/100);
+    }
+    
+    
+    function volumeCreditsFor(aPerformance) {
+        let result = 0;
+        result += Math.max(aPerformance.audience - 30, 0);
+        if ("comedy" === playFor(aPerformance).type)
+        // 희극 관객 5명마다 추가 포인트를 제공한다
+        result += Math.floor(aPerformance.audience / 5);
+        return result;
+}
+function playFor(aPerformance) {
+    return plays[aPerformance.playId];
+}
 function amountFor(aPerformance) {
     let result = 0; //thisAmount -> result 명확한 이름으로 변경
     switch(playFor(aPerformance).type) {
@@ -55,55 +101,15 @@ function amountFor(aPerformance) {
     }
     return result; //함수 안에서 값이 바뀌는 변수 반환
 }
-
-function playFor(aPerformance) {
-    return plays[aPerformance.playId];
+    
 }
 
-function volumeCreditsFor(aPerformance) {
-    let result = 0;
-    result += Math.max(aPerformance.audience - 30, 0);
-    if ("comedy" === playFor(aPerformance).type)
-    // 희극 관객 5명마다 추가 포인트를 제공한다
-    result += Math.floor(aPerformance.audience / 5);
-    return result;
-}
 
-function usd(aNumber) {
-    return new Intl.NumberFormat("en-US",
-                        {style: "currency", currency: "USD",
-                    minimumFactionDigits: 2}).format(aNumber/100);
-}
 
-function totalVolumeCredits() {
-    let result = 0;
-    for (let perf of invoices[0].perfomances) {
-        result += volumeCreditsFor(perf);
-    }
-    return result;
-}
 
-function totalAmount() {
-    let result = 0;
-    for(let perf of invoices[0].perfomances) {
-        result += amountFor(perf);
-    }
-    return result;
-}
 
-function statement(invoices) {
-    let result = `청구 내역 (고객명: ${invoices[0].customer})\n`;
-    for (let perf of invoices[0].perfomances) {
 
-        // 청구 내역을 출력한다
-        result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
-    }
-  
 
-    result += `총액: ${usd(totalAmount())}\n`;
-    result += `적립포인트: ${totalVolumeCredits()}점\n`;
-    return result;
-}
 
 
 
