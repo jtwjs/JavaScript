@@ -33,27 +33,27 @@ const invoices = [
     }
 ]
 
+
 function statement(invoices, plays) {
+    
+    return renderPlainText(createStatementData(invoices, plays));
+    
+}
+
+function createStatementData(invoices, plays) {
     const statementData = {};
     statementData.customer = invoices[0].customer;
-    statementData.perfomances = invoices[0].perfomances.map(enrichPerformance);
+    statementData.performances = invoices[0].perfomances.map(enrichPerformance);
     statementData.totalAmount = totalAmount(statementData);
     statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-    return renderPlainText(statementData,plays);
-
+    return statementData;
     function totalAmount(data) {
-        let result = 0;
-        for(let perf of data.perfomances) {
-            result += perf.amount;
-        }
-        return result;
+        return data.performances
+            .reduce( (total, p) => total += p.amount,0);
     }
     function totalVolumeCredits(data) {
-        let result = 0;
-        for (let perf of data.perfomances) {
-            result += perf.volumeCredits;
-        }
-        return result;
+        return data.performances
+            .reduce((total, p) => total += p.volumeCredits, 0);
     }
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);//얕은복사 실행
@@ -101,7 +101,7 @@ function statement(invoices, plays) {
 
 function renderPlainText(data, plays) {
     let result = `청구 내역 (고객명: ${data.customer})\n`;
-    for (let perf of data.perfomances) {
+    for (let perf of data.performances) {
         // 청구 내역을 출력한다
         result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience}석)\n`;
     }
@@ -109,7 +109,6 @@ function renderPlainText(data, plays) {
     result += `총액: ${usd(data.totalAmount)}\n`;
     result += `적립포인트: ${data.totalVolumeCredits}점\n`;
     return result;
-    
     
     function usd(aNumber) {
         return new Intl.NumberFormat("en-US",
