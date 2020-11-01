@@ -34,11 +34,14 @@ const invoices = [
 ]
 
 function statement(invoices, plays) {
-    return renderPlainText(invoices,plays);
+    const statementData = {};
+    statementData.customer = invoices[0].customer;
+    statementData.perfomances = invoices[0].perfomances;
+    return renderPlainText(statementData,plays);
 }
 
-function renderPlainText(invoices, plays) {
-    let result = `청구 내역 (고객명: ${invoices[0].customer})\n`;
+function renderPlainText(data, plays) {
+    let result = `청구 내역 (고객명: ${data.customer})\n`;
     for (let perf of invoices[0].perfomances) {
         // 청구 내역을 출력한다
         result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
@@ -50,14 +53,14 @@ function renderPlainText(invoices, plays) {
     
     function totalAmount() {
         let result = 0;
-        for(let perf of invoices[0].perfomances) {
+        for(let perf of data.perfomances) {
             result += amountFor(perf);
         }
         return result;
     }
     function totalVolumeCredits() {
         let result = 0;
-        for (let perf of invoices[0].perfomances) {
+        for (let perf of data.perfomances) {
             result += volumeCreditsFor(perf);
         }
         return result;
