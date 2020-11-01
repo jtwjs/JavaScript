@@ -1,1 +1,0 @@
-  // const play = playFor(perf); //우변을 함수로 추출

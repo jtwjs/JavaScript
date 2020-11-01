@@ -1,52 +1,11 @@
-const plays = {
-    hamlet: {
-        name: "Hamlet",
-        type: "tragedy"
-    },
-    asLike: {
-        name: "As You Like It",
-        type: "comedy"
-    },
-    othello: {
-        name: "Othello",
-        type: "tragedy"
-    }
-}
+exports.createStatementData = function(invoices, plays) {
+    const result = {};
+    result.customer = invoices[0].customer;
+    result.performances = invoices[0].perfomances.map(enrichPerformance);
+    result.totalAmount = totalAmount(result);
+    result.totalVolumeCredits = totalVolumeCredits(result);
+    return result;
 
-const invoices = [
-    {
-        customer: "BigCo",
-        perfomances: [
-            {
-                playId: "hamlet",
-                audience: 55
-            },
-            {
-                playId: "asLike",
-                audience: 35
-            },
-            {
-                playId: "othello",
-                audience: 40
-            },
-        ]
-    }
-]
-
-
-function statement(invoices, plays) {
-    
-    return renderPlainText(createStatementData(invoices, plays));
-    
-}
-
-function createStatementData(invoices, plays) {
-    const statementData = {};
-    statementData.customer = invoices[0].customer;
-    statementData.performances = invoices[0].perfomances.map(enrichPerformance);
-    statementData.totalAmount = totalAmount(statementData);
-    statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-    return statementData;
     function totalAmount(data) {
         return data.performances
             .reduce( (total, p) => total += p.amount,0);
@@ -96,36 +55,4 @@ function createStatementData(invoices, plays) {
     function playFor(aPerformance) {
         return plays[aPerformance.playId];
     }
-    
 }
-
-function renderPlainText(data, plays) {
-    let result = `청구 내역 (고객명: ${data.customer})\n`;
-    for (let perf of data.performances) {
-        // 청구 내역을 출력한다
-        result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience}석)\n`;
-    }
-
-    result += `총액: ${usd(data.totalAmount)}\n`;
-    result += `적립포인트: ${data.totalVolumeCredits}점\n`;
-    return result;
-    
-    function usd(aNumber) {
-        return new Intl.NumberFormat("en-US",
-                            {style: "currency", currency: "USD",
-                        minimumFactionDigits: 2}).format(aNumber/100);
-    }
-
-    
-}
-
-
-
-
-
-
-
-
-
-
-console.log(statement(invoices,plays));
