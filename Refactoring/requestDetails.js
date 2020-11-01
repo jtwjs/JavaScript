@@ -37,8 +37,24 @@ function statement(invoices, plays) {
     const statementData = {};
     statementData.customer = invoices[0].customer;
     statementData.perfomances = invoices[0].perfomances.map(enrichPerformance);
+    statementData.totalAmount = totalAmount(statementData);
+    statementData.totalVolumeCredits = totalVolumeCredits(statementData);
     return renderPlainText(statementData,plays);
 
+    function totalAmount(data) {
+        let result = 0;
+        for(let perf of data.perfomances) {
+            result += perf.amount;
+        }
+        return result;
+    }
+    function totalVolumeCredits(data) {
+        let result = 0;
+        for (let perf of data.perfomances) {
+            result += perf.volumeCredits;
+        }
+        return result;
+    }
     function enrichPerformance(aPerformance) {
         const result = Object.assign({}, aPerformance);//얕은복사 실행
         result.play = playFor(result);
@@ -90,24 +106,11 @@ function renderPlainText(data, plays) {
         result += ` ${perf.play.name}: ${usd(perf.amount)} (${perf.audience}석)\n`;
     }
 
-    result += `총액: ${usd(totalAmount())}\n`;
-    result += `적립포인트: ${totalVolumeCredits()}점\n`;
+    result += `총액: ${usd(data.totalAmount)}\n`;
+    result += `적립포인트: ${data.totalVolumeCredits}점\n`;
     return result;
     
-    function totalAmount() {
-        let result = 0;
-        for(let perf of data.perfomances) {
-            result += perf.amount;
-        }
-        return result;
-    }
-    function totalVolumeCredits() {
-        let result = 0;
-        for (let perf of data.perfomances) {
-            result += perf.volumeCredits;
-        }
-        return result;
-    }
+    
     function usd(aNumber) {
         return new Intl.NumberFormat("en-US",
                             {style: "currency", currency: "USD",
