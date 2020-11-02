@@ -1,29 +1,36 @@
 'use strict';
 
+class NotNumberError extends Error {
+    constructor() {
+      super('숫자가 아닌 값이 포함되어 있습니다.');
+      this.name = 'NotNumberError';
+    }
+  }
+
+class NotArrayError extends Error {
+    constructor() {
+      super('배열이 아닙니다.');
+      this.name = 'NotArrayError';
+    }
+  }
+
  function game(arr) {
-     const hangul = '영일이삼사오육칠팔구십';
-     const read = arr.map( (num) => {
+    if (!Array.isArray(arr)) {
+        throw new NotArrayError();
+      }
+    
+      if (arr.some((num) => typeof num !== 'number')) {
+        throw new NotNumberError();
+      }
 
-        if(num>10) {
-            if(parseInt(num/10) === 1) {
-                if((num%10) % 3 === 0) return '짝';
-                return hangul[10] + hangul[num%10];
+     return arr
+        .map( (num) => {
+            const str = String(num).replace(/[^369]/g, '');
+            if(/[369]/.test(str)) {
+                return '짝'.repeat(str.length);
             }
 
-            if(parseInt(num/10) % 3 === 0) {
-                if(num%10 % 3 === 0 && num%10 !== 0) return '짝짝';
-                return '짝';
-            }
-
-            return hangul[parseInt(num/10)] + hangul[10] + hangul[num%10];
-        }
-
-         if(num % 3 === 0) {
-             return '짝';
-             
-         }
-
-         return hangul[num];
-     });
-     return read.join(',');
+         return num;
+     })
+      .join(',');
 }
