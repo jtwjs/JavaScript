@@ -1,5 +1,23 @@
 function createPerformanceCalculator(aPerformance, aPlay){
-    return new PerformanceCalculator(aPerformance, aPlay);
+    switch(aPlay.type) {
+        case "tragedy": return new TragedyCalculator(aPerformance, aPlay);
+        case "comedy": return new ComedyCalculator(aPerformance, aPlay);
+        default: 
+            throw new Error(`알 수 없는 장르: ${aPlay.type}`);
+    }
+}
+
+class TragedyCalculator extends PerformanceCalculator {
+    get amount() {
+        let result = 40000;
+        if( this.performance.audience > 30) {
+            result += 1000 * (this.performance.audience - 30);
+        }
+        return result;
+    }
+}
+class ComedyCalculator extends PerformanceCalculator {
+
 }
 
 class PerformanceCalculator {
@@ -11,11 +29,7 @@ class PerformanceCalculator {
         let result = 0;
         switch(this.play.type) {
             case "tragedy": //비극
-            result = 40000;
-                if(this.performance.audience > 30) {
-                    result += 1000 * (this.performance.audience - 30);
-                }
-            break;
+                throw "오류 발생"; //비극 공연료는 TragedyCalculator를 이용하도록 유도 
             case "comedy": //희극
             result = 30000;
                 if(this.performance.audience > 20) {
