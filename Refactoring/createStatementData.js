@@ -1,3 +1,10 @@
+class PerformanceCalculator {
+    constructor(aPerformance, aPlay) {
+        this.performance = aPerformance;
+        this.play = aPlay;
+    }
+}
+
 exports.createStatementData = function(invoices, plays) {
     const result = {};
     result.customer = invoices[0].customer;
@@ -15,8 +22,9 @@ exports.createStatementData = function(invoices, plays) {
             .reduce((total, p) => total += p.volumeCredits, 0);
     }
     function enrichPerformance(aPerformance) {
+        const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance)); //공연료 계산기 생성
         const result = Object.assign({}, aPerformance);//얕은복사 실행
-        result.play = playFor(result);
+        result.play = calculator.play;
         result.amount = amountFor(result);
         result.volumeCredits = volumeCreditsFor(result);
         return result;
@@ -56,3 +64,4 @@ exports.createStatementData = function(invoices, plays) {
         return plays[aPerformance.playId];
     }
 }
+
