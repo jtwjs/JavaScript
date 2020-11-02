@@ -24,6 +24,14 @@ class PerformanceCalculator {
         }
         return result; //함수 안에서 값이 바뀌는 변수 반환
     }
+    get volumeCredits() {
+        let result = 0;
+        result += Math.max(this.performance.audience - 30, 0);
+        if ("comedy" === this.play.type)
+        // 희극 관객 5명마다 추가 포인트를 제공한다
+        result += Math.floor(this.performance.audience / 5);
+        return result;
+    }
 }
 
 exports.createStatementData = function(invoices, plays) {
@@ -47,18 +55,11 @@ exports.createStatementData = function(invoices, plays) {
         const result = Object.assign({}, aPerformance);//얕은복사 실행
         result.play = calculator.play;
         result.amount = calculator.amount;
-        result.volumeCredits = volumeCreditsFor(result);
+        result.volumeCredits = calculator.volumeCredits;
         return result;
     }
 
-    function volumeCreditsFor(aPerformance) {
-        let result = 0;
-        result += Math.max(aPerformance.audience - 30, 0);
-        if ("comedy" === aPerformance.play.type)
-        // 희극 관객 5명마다 추가 포인트를 제공한다
-        result += Math.floor(aPerformance.audience / 5);
-        return result;
-    }
+    
     
     
     function playFor(aPerformance) {
