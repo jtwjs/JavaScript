@@ -1,3 +1,18 @@
+
+class PerformanceCalculator {
+    constructor(aPerformance, aPlay) {
+        this.performance = aPerformance;
+        this.play = aPlay;
+    }
+    get amount(){
+        throw new Error('서브클래스에서 처리하도록 설계되었다.');
+    }
+    get volumeCredits() {
+        return Math.max(this.performance.audience - 30, 0);
+    }
+}
+
+
 function createPerformanceCalculator(aPerformance, aPlay){
     switch(aPlay.type) {
         case "tragedy": return new TragedyCalculator(aPerformance, aPlay);
@@ -17,38 +32,16 @@ class TragedyCalculator extends PerformanceCalculator {
     }
 }
 class ComedyCalculator extends PerformanceCalculator {
-
-}
-
-class PerformanceCalculator {
-    constructor(aPerformance, aPlay) {
-        this.performance = aPerformance;
-        this.play = aPlay;
-    }
-    get amount(){ //amountFor() 함수의 코드를 계산기 클래스로 복사
-        let result = 0;
-        switch(this.play.type) {
-            case "tragedy": //비극
-                throw "오류 발생"; //비극 공연료는 TragedyCalculator를 이용하도록 유도 
-            case "comedy": //희극
-            result = 30000;
-                if(this.performance.audience > 20) {
-                    result += 10000 + 500 * (this.performance.audience - 20);
-                }
-                result += 300 * this.performance.audience;
-                break;
-            default: 
-                throw new Error(`알 수 없는 장르: ${this.play.type}`);
+    get amount() {
+        let result = 30000;
+        if( this.performance.audience > 20) {
+            result += 1000 + 500 * (this.performance.audience - 20);
         }
-        return result; //함수 안에서 값이 바뀌는 변수 반환
+        result += 300 * this.performance.audience;
+        return result;
     }
     get volumeCredits() {
-        let result = 0;
-        result += Math.max(this.performance.audience - 30, 0);
-        if ("comedy" === this.play.type)
-        // 희극 관객 5명마다 추가 포인트를 제공한다
-        result += Math.floor(this.performance.audience / 5);
-        return result;
+        return super.volumeCredits + Math.floor(this.performance.audience / 5 );
     }
 }
 
