@@ -1,3 +1,7 @@
+function createPerformanceCalculator(aPerformance, aPlay){
+    return new PerformanceCalculator(aPerformance, aPlay);
+}
+
 class PerformanceCalculator {
     constructor(aPerformance, aPlay) {
         this.performance = aPerformance;
@@ -51,7 +55,9 @@ exports.createStatementData = function(invoices, plays) {
             .reduce((total, p) => total += p.volumeCredits, 0);
     }
     function enrichPerformance(aPerformance) {
-        const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance)); //공연료 계산기 생성
+        const calculator= createPerformanceCalculator(aPerformance,
+                                                            playFor(aPerformance));
+        // const calculator = new PerformanceCalculator(aPerformance, playFor(aPerformance)); //공연료 계산기 생성
         const result = Object.assign({}, aPerformance);//얕은복사 실행
         result.play = calculator.play;
         result.amount = calculator.amount;
