@@ -14,7 +14,7 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: ['./TDD/src/369.js', './TDD/test/369.spec.js'
+    files: ['./TDD/src/*.js', './TDD/test/*.spec.js'
     ],
 
 
