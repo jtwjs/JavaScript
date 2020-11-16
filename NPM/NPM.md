@@ -18,6 +18,12 @@ node -v
 npm -v
 ```
 
+npm 버전을 최신으로 업데이트
+
+```
+npm install -g npm
+```
+
 ### npm 기본 명령어
 
 ```
